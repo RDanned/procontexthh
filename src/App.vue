@@ -8,6 +8,7 @@
         :id="index"
       />
     </div>
+    <dashboard />
   </div>
 </template>
 
@@ -15,10 +16,11 @@
 import { mapState } from "vuex";
 import { actionTypes } from "@/store/modules/list";
 import List from "@/components/List";
+import Dashboard from "@/components/Dashboard";
 
 export default {
   name: "App",
-  components: { List },
+  components: { List, Dashboard },
   data() {
     return {
       listCount: 5,
@@ -74,6 +76,8 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
   width: 100%;
+  display: flex;
+  justify-content: space-around;
 }
 
 .left {
