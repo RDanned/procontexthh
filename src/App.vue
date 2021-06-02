@@ -42,7 +42,7 @@ export default {
       for (let j = 0; j != itemsCount; j++) {
         let item = {
           id: j,
-          count: this.getRandomInt(5, 40),
+          count: this.getRandomInt(5, 10),
           color: `#${this.randomColor()}`,
           checked: false,
         };
