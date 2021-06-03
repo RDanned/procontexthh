@@ -1,17 +1,20 @@
 const state = {
-  data: null
+  data: null,
+  active: null
 }
 
 export const mutationTypes = {
   setLists: '[list] Set lists',
   setList: '[list] Set list',
-  setItem: '[list] Set item'
+  setItem: '[list] Set item',
+  setActive: '[list] Set active list'
 }
 
 export const actionTypes = {
   setLists: '[list] Set lists',
   setList: '[list] Set list',
-  setItem: '[list] Set item'
+  setItem: '[list] Set item',
+  setActive: '[list] Set active list'
 }
 
 const mutations = {
@@ -24,6 +27,9 @@ const mutations = {
   [mutationTypes.setItem](state, payload) {
     state.data[payload.list.id].items[payload.item.id] = payload.item
   },
+  [mutationTypes.setActive](state, payload) {
+    state.active = payload.id
+  }
 }
 
 const actions = {
@@ -35,6 +41,9 @@ const actions = {
   },
   [actionTypes.setItem](context, {list, item}) {
     context.commit(mutationTypes.setItem, {list, item})
+  },
+  [actionTypes.setActive](context, {id}) {
+    context.commit(mutationTypes.setActive, {id})
   },
 }
 

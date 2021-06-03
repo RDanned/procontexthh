@@ -1,30 +1,37 @@
 <template>
   <div class="list-wrapper">
     <p>List {{ list.id }}</p>
-    <button @click="changeShuffle">перемешать</button>
-    <ul v-if="!shuffle">
-      <dashboard-item v-for="item in list.items" :item="item" :key="item.id" />
-    </ul>
-    <ul v-else>
-      <li class="dahboard-item">
-        <div
-          @click="deleteItem"
-          v-for="(item, index) in shuffled"
-          :key="index"
-          class="item-color"
-          :style="`background-color: ${item.color}`"
-        ></div>
-      </li>
-    </ul>
+    <div v-if="isActive">
+      <button @click="changeShuffle">перемешать</button>
+      <ul v-if="!shuffle">
+        <dashboard-item
+          v-for="item in list.items"
+          :item="item"
+          :key="item.id"
+        />
+      </ul>
+      <ul v-else>
+        <li class="dahboard-item">
+          <dashboard-colored-item-value
+            v-for="(item, index) in shuffled"
+            :key="index"
+            :list="list"
+            :item="item"
+          />
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import DashboardItem from "@/components/DashboardItem";
-import { actionTypes } from "@/store/modules/list";
+import DashboardColoredItemValue from "@/components/DashboardColoredItemValue";
+//import { actionTypes } from "@/store/modules/list";
 
 export default {
   name: "DashboardList",
-  components: { DashboardItem },
+  components: { DashboardItem, DashboardColoredItemValue },
   props: {
     list: {
       type: Object,
@@ -37,6 +44,11 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      isActive: function(state) {
+        return state.list.active === this.list.id;
+      },
+    }),
     shuffled: function() {
       let allItems = [];
       this.list.items.forEach((item) => {
@@ -55,19 +67,18 @@ export default {
     changeShuffle: function() {
       this.shuffle = !this.shuffle;
     },
-    deleteItem: function() {
-      let list = this.$parent.list;
-      console.log(this.item.count);
-      this.item.count = this.item.count - 1;
-      console.log(this.item.count);
-      this.$store.dispatch(actionTypes.setItem, { list, item: this.item });
-    },
   },
 };
 </script>
 <style scoped>
 ul {
   list-style: none;
+}
+
+.list-wrapper {
+  border: 1px solid black;
+  margin: 20px;
+  padding: 10px;
 }
 
 .item-color {

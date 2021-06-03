@@ -1,11 +1,11 @@
 <template>
   <div>
     <div>
-      <span>-</span>
+      <arrow :list-id="list.id" />
       <input type="checkbox" @change="check" :checked="isSmthChecked" />
       <span>List {{ list.id }}</span>
     </div>
-    <div>
+    <div v-if="isActive" class="items-container">
       <ul>
         <item
           v-for="(item, index) in list.items"
@@ -19,11 +19,13 @@
 </template>
 <script>
 import Item from "@/components/Item";
+import Arrow from "@/components/Arrow";
 import { actionTypes } from "@/store/modules/list";
+import { mapState } from "vuex";
 
 export default {
   name: "List",
-  components: { Item },
+  components: { Item, Arrow },
   props: {
     list: {
       type: Object,
@@ -31,6 +33,11 @@ export default {
     },
   },
   computed: {
+    ...mapState({
+      isActive: function(state) {
+        return state.list.active === this.list.id;
+      },
+    }),
     isSmthChecked: function() {
       let isChecked = false;
       this.list.items.map((item) => {
@@ -42,7 +49,6 @@ export default {
   },
   methods: {
     check: function() {
-      //todo: написать вопрос
       if (!this.isSmthChecked) {
         this.list.checked = !this.list.checked;
         this.$store.dispatch(actionTypes.setList, { list: this.list });
