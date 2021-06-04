@@ -72,7 +72,6 @@ export default {
       }
 
       this.$store.dispatch(actionTypes.setItem, { list, item: newItem });
-      //this.isCountChange = false;
     },
     saveColor: function() {
       let list = this.$parent.list;

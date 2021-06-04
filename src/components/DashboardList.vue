@@ -2,7 +2,10 @@
   <div class="list-wrapper">
     <p>List {{ list.id }}</p>
     <div v-if="isActive">
-      <button @click="changeShuffle">перемешать</button>
+      <button @click="changeShuffle">
+        {{ shuffle ? "сортировать" : "перемешать" }}
+      </button>
+
       <ul v-if="!shuffle">
         <dashboard-item
           v-for="item in list.items"
@@ -54,6 +57,7 @@ export default {
       this.list.shuffledItems.forEach((itemId) => {
         allItems.push(this.list.items[itemId]);
       });
+
       return allItems;
     },
   },

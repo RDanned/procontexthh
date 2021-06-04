@@ -1,9 +1,11 @@
 <template>
-  <div
-    @click="deleteItem"
-    class="item-color"
-    :style="`background-color: ${item.color}`"
-  ></div>
+  <transition v-if="item.checked" class="item-color">
+    <div
+      @click="deleteItem"
+      class="item-color"
+      :style="`background-color: ${item.color}`"
+    ></div>
+  </transition>
 </template>
 <script>
 import { actionTypes } from "@/store/modules/list";
@@ -25,6 +27,8 @@ export default {
   },
   methods: {
     deleteItem: function() {
+      if (this.item.count === 0) return;
+
       let list = this.list;
       let shuffledIndex = this.list.shuffledItems.indexOf(
         this.item.id,
@@ -45,5 +49,22 @@ export default {
   width: 10px;
   height: 10px;
   margin: 1px;
+  transition: all 0.2s;
+}
+
+.item-color-enter {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.item-color-enter-active {
+  transition: all 0.3s ease;
+}
+.item-color-enter-to {
+  width: 10px;
+  height: 10px;
+  opacity: 1;
+  transition: all 0.1s;
 }
 </style>
