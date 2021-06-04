@@ -19,10 +19,21 @@ export default {
       type: Object,
       required: true,
     },
+    offset: {
+      type: Number,
+    },
   },
   methods: {
     deleteItem: function() {
       let list = this.list;
+      let shuffledIndex = this.list.shuffledItems.indexOf(
+        this.item.id,
+        this.offset
+      );
+
+      this.list.shuffledItems.splice(shuffledIndex, 1);
+
+      this.list.shuffledItems;
       this.item.count = this.item.count - 1;
       this.$store.dispatch(actionTypes.setItem, { list, item: this.item });
     },

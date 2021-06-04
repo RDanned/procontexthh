@@ -1,19 +1,29 @@
 <template>
   <li class="dahboard-item">
-    <div
+    <!-- <div
       @click="deleteItem"
       class="item-color"
-      v-for="index in item.count"
+      v-for="index in Number(item.count)"
       :key="index"
       :style="`background-color: ${item.color}`"
-    ></div>
+    ></div> -->
+
+    <dashboard-colored-item-value
+      v-for="index in Number(item.count)"
+      :key="index"
+      :list="$parent.list"
+      :item="item"
+      :offset="index"
+    />
   </li>
 </template>
 <script>
 import { actionTypes } from "@/store/modules/list";
+import DashboardColoredItemValue from "@/components/DashboardColoredItemValue";
 
 export default {
   name: "DashboardItem",
+  components: { DashboardColoredItemValue },
   props: {
     item: {
       type: Object,

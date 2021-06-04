@@ -1,15 +1,26 @@
 <template>
   <li>
     <div class="item-left">
-      <input @change="check" type="checkbox" :checked="listChecked" />
-      <span>Item {{ itemData.id }}</span>
+      <input
+        :id="`item-${itemData.id}`"
+        @change="check"
+        type="checkbox"
+        :checked="listChecked"
+      />
+      <label :for="`item-${itemData.id}`">Item {{ itemData.id }}</label>
     </div>
     <div class="item-right">
       <span @click="initCountChange" v-if="!isCountChange">
         {{ itemData.count }}
       </span>
 
-      <input @blur="saveCount" v-else type="text" v-model="itemData.count" />
+      <input
+        @change="saveCount"
+        @blur="isCountChange = false"
+        v-else
+        type="number"
+        v-model="itemData.count"
+      />
 
       <input type="color" v-model="itemData.color" @change="saveColor" />
     </div>
@@ -17,6 +28,7 @@
 </template>
 <script>
 import { actionTypes } from "@/store/modules/list";
+import { shuffleArray } from "@/helpers/list";
 
 export default {
   name: "Item",
@@ -31,6 +43,7 @@ export default {
   },
   data() {
     return {
+      initialCount: this.item.count,
       isCountChange: false,
       itemData: this.item,
     };
@@ -41,9 +54,25 @@ export default {
     },
     saveCount: function() {
       let list = this.$parent.list;
-      let item = this.itemData;
-      this.$store.dispatch(actionTypes.setItem, { list, item });
-      this.isCountChange = false;
+      let newItem = this.itemData;
+
+      console.log("save count");
+      console.log(newItem.count);
+      console.log(this.initialCount);
+      if (newItem.count > this.initialCount) {
+        let newItemsCount = newItem.count - this.initialCount;
+
+        console.log("newItemsCount");
+        console.log(newItemsCount);
+        for (let i = 0; i != newItemsCount; i++) {
+          list.shuffledItems.push(newItem.id);
+        }
+
+        shuffleArray(list.shuffledItems);
+      }
+
+      this.$store.dispatch(actionTypes.setItem, { list, item: newItem });
+      //this.isCountChange = false;
     },
     saveColor: function() {
       let list = this.$parent.list;
@@ -75,6 +104,6 @@ li {
 }
 
 .item-right input {
-  width: 20px;
+  width: 35px;
 }
 </style>

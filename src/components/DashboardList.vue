@@ -17,6 +17,7 @@
             :key="index"
             :list="list"
             :item="item"
+            :offset="index"
           />
         </li>
       </ul>
@@ -27,7 +28,6 @@
 import { mapState } from "vuex";
 import DashboardItem from "@/components/DashboardItem";
 import DashboardColoredItemValue from "@/components/DashboardColoredItemValue";
-//import { actionTypes } from "@/store/modules/list";
 
 export default {
   name: "DashboardList",
@@ -51,19 +51,13 @@ export default {
     }),
     shuffled: function() {
       let allItems = [];
-      this.list.items.forEach((item) => {
-        for (let i = 0; i != item.count; i++) allItems.push(item);
+      this.list.shuffledItems.forEach((itemId) => {
+        allItems.push(this.list.items[itemId]);
       });
-
-      console.log(allItems);
-      this.shuffleArray(allItems);
       return allItems;
     },
   },
   methods: {
-    shuffleArray: function(array) {
-      array.sort(() => Math.random() - 0.5);
-    },
     changeShuffle: function() {
       this.shuffle = !this.shuffle;
     },
