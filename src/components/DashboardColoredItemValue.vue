@@ -1,20 +1,23 @@
 <template>
-  <transition v-if="item.checked" class="item-color">
+  <transition appear name="list-color">
     <div
+      v-if="itemComputed.checked"
+      :key="1"
       @click="deleteItem"
-      class="item-color"
-      :style="`background-color: ${item.color}`"
+      :class="['item-color', 'sort', { break: !isLast && !isShuffled }]"
+      :style="`background-color: ${itemComputed.color};`"
     ></div>
   </transition>
 </template>
 <script>
 import { actionTypes } from "@/store/modules/list";
+import { mapState } from "vuex";
 
 export default {
   name: "DashboardColoredItemValue",
   props: {
     item: {
-      type: Object,
+      type: Number,
       required: true,
     },
     list: {
@@ -24,22 +27,49 @@ export default {
     offset: {
       type: Number,
     },
+    isShuffled: {
+      type: Boolean,
+      default: false,
+    },
+    isLast: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    ...mapState({
+      itemComputed: function(state) {
+        return state.list.data[this.list.id].items[this.item];
+      },
+    }),
+  },
+  mounted() {
+    if (this.item.isFirst) {
+      console.log("first");
+    }
   },
   methods: {
     deleteItem: function() {
-      if (this.item.count === 0) return;
-
       let list = this.list;
+      let item = this.itemComputed;
+
+      if (item.count == 0) return;
+
       let shuffledIndex = this.list.shuffledItems.indexOf(
-        this.item.id,
+        this.item,
         this.offset
       );
 
-      this.list.shuffledItems.splice(shuffledIndex, 1);
+      let sortedIndex = this.list.sortedItems.indexOf(this.item);
 
-      this.list.shuffledItems;
-      this.item.count = this.item.count - 1;
-      this.$store.dispatch(actionTypes.setItem, { list, item: this.item });
+      this.list.shuffledItems.splice(shuffledIndex, 1);
+      this.list.sortedItems.splice(sortedIndex, 1);
+
+      item.count = item.count - 1;
+
+      list.items[this.item] = item;
+
+      this.$store.dispatch(actionTypes.setList, { list, item });
     },
   },
 };
@@ -52,10 +82,22 @@ export default {
   transition: all 0.2s;
 }
 
+.item-color.sort {
+  float: left;
+}
+
+.item-color.break {
+  clear: left;
+}
+
 .item-color-enter {
   width: 0;
   height: 0;
   opacity: 0;
+}
+
+.item-color-move {
+  transition: transform 1s;
 }
 
 .item-color-enter-active {
@@ -66,5 +108,9 @@ export default {
   height: 10px;
   opacity: 1;
   transition: all 0.1s;
+}
+
+.item-color-leave-active {
+  position: absolute;
 }
 </style>

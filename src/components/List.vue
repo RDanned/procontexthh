@@ -8,7 +8,7 @@
         @input="check"
         v-model="listChecked"
       />
-      <label :for="`list-${list.id}`">List {{ list.id }} {{ isChecked }}</label>
+      <label :for="`list-${list.id}`">List {{ list.id }}</label>
     </div>
     <div v-if="isActive" class="items-container">
       <ul>
@@ -73,10 +73,6 @@ export default {
         });
 
         if (!isChecked && list.checked) isChecked = true;
-
-        console.log("is checked");
-        console.log(list.checked);
-
         return isChecked;
       },
     }),
@@ -87,10 +83,6 @@ export default {
   methods: {
     check: function() {
       let list = this.list;
-      console.log("check");
-      console.log(this.isAllchecked);
-      console.log(this.isChecked);
-      console.log(this.isAllchecked && this.isChecked);
 
       if (this.isSmthChecked && !list.checked && !this.isAllchecked) {
         list.checked = true;
@@ -99,7 +91,6 @@ export default {
           return item;
         });
       } else if (this.isAllchecked && this.isChecked) {
-        console.log("all");
         list.checked = false;
         list.items = list.items.map((item) => {
           item.checked = false;

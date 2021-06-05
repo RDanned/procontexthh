@@ -5,36 +5,28 @@
       <button @click="changeShuffle">
         {{ shuffle ? "сортировать" : "перемешать" }}
       </button>
-
-      <ul v-if="!shuffle">
-        <dashboard-item
-          v-for="item in list.items"
+      <ul>
+        <dashboard-colored-item-value
+          v-for="(item, index) in itemsIds"
+          :key="index"
+          :list="list"
           :item="item"
-          :key="item.id"
+          :offset="index"
+          :is-shuffled="shuffle"
+          :is-last="itemsIds[index] == itemsIds[index - 1] || index == 0"
         />
-      </ul>
-      <ul v-else>
-        <li class="dahboard-item">
-          <dashboard-colored-item-value
-            v-for="(item, index) in shuffled"
-            :key="index"
-            :list="list"
-            :item="item"
-            :offset="index"
-          />
-        </li>
+        <div style="clear: both"></div>
       </ul>
     </div>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
-import DashboardItem from "@/components/DashboardItem";
 import DashboardColoredItemValue from "@/components/DashboardColoredItemValue";
 
 export default {
   name: "DashboardList",
-  components: { DashboardItem, DashboardColoredItemValue },
+  components: { DashboardColoredItemValue },
   props: {
     list: {
       type: Object,
@@ -51,7 +43,17 @@ export default {
       isActive: function(state) {
         return state.list.active === this.list.id;
       },
+      itemsIds: function(state) {
+        let itemsIds = [];
+
+        if (this.shuffle)
+          itemsIds = state.list.data[this.list.id].shuffledItems;
+        else itemsIds = state.list.data[this.list.id].sortedItems;
+
+        return itemsIds;
+      },
     }),
+
     shuffled: function() {
       let allItems = [];
       this.list.shuffledItems.forEach((itemId) => {
@@ -71,6 +73,24 @@ export default {
 <style scoped>
 ul {
   list-style: none;
+}
+
+.list-color-move {
+  transition: all 1s;
+}
+
+.list-color-enter {
+  transition: all 1s;
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-color-enter,
+.list-color-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-color-leave-active {
+  position: absolute;
 }
 
 .list-wrapper {

@@ -56,9 +56,6 @@ export default {
       let list = this.$parent.list;
       let newItem = this.itemData;
 
-      console.log("save count");
-      console.log(newItem.count);
-      console.log(this.initialCount);
       if (newItem.count > this.initialCount) {
         let newItemsCount = newItem.count - this.initialCount;
 
@@ -66,9 +63,11 @@ export default {
         console.log(newItemsCount);
         for (let i = 0; i != newItemsCount; i++) {
           list.shuffledItems.push(newItem.id);
+          list.sortedItems.push(newItem.id);
         }
 
         shuffleArray(list.shuffledItems);
+        list.sortedItems.sort();
       }
 
       this.$store.dispatch(actionTypes.setItem, { list, item: newItem });

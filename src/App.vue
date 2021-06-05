@@ -23,10 +23,7 @@ export default {
   name: "App",
   components: { List, Dashboard },
   data() {
-    return {
-      listCount: 5,
-      data: [],
-    };
+    return {};
   },
   computed: {
     ...mapState({
@@ -37,7 +34,13 @@ export default {
     let lists = [];
 
     for (let i = 0; i != 5; i++) {
-      let list = { id: i, items: [], checked: false, shuffledItems: [] };
+      let list = {
+        id: i,
+        items: [],
+        checked: false,
+        shuffledItems: [],
+        sortedItems: [],
+      };
 
       let itemsCount = this.getRandomInt(5, 10);
       for (let j = 0; j != itemsCount; j++) {
@@ -46,9 +49,14 @@ export default {
           count: this.getRandomInt(5, 10),
           color: `#${this.randomColor()}`,
           checked: false,
+          isFirst: false,
         };
 
-        for (let k = 0; k != item.count; k++) list.shuffledItems.push(item.id);
+        for (let k = 0; k != item.count; k++) {
+          item.isFirst = k == 0;
+          list.shuffledItems.push(item.id);
+          list.sortedItems.push(item.id);
+        }
 
         list.items.push(item);
       }
@@ -66,11 +74,9 @@ export default {
       return Math.floor(Math.random() * (max - min)) + min;
     },
     randomColor: function() {
-      //return ((Math.random() * 0xffffff) << 0).toString(16);
       return Math.floor(Math.random() * 2 ** 24)
         .toString(16)
         .padStart(6, 0);
-      //return Math.floor(Math.random() * 16777215).toString(16);
     },
   },
 };
@@ -81,7 +87,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
   color: #2c3e50;
   margin-top: 60px;
   width: 100%;
