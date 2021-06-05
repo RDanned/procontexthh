@@ -79,6 +79,7 @@ export default {
     },
     check: function() {
       let list = this.$parent.list;
+      list.checked = true;
       this.$store.dispatch(actionTypes.setItem, { list, item: this.itemData });
     },
   },

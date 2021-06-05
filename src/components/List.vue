@@ -73,6 +73,7 @@ export default {
         });
 
         if (!isChecked && list.checked) isChecked = true;
+
         return isChecked;
       },
     }),
