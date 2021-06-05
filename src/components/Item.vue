@@ -5,7 +5,7 @@
         :id="`item-${itemData.id}`"
         @change="check"
         type="checkbox"
-        :checked="listChecked"
+        v-model="itemData.checked"
       />
       <label :for="`item-${itemData.id}`">Item {{ itemData.id }}</label>
     </div>
@@ -80,7 +80,6 @@ export default {
     },
     check: function() {
       let list = this.$parent.list;
-      this.itemData.checked = !this.itemData.checked;
       this.$store.dispatch(actionTypes.setItem, { list, item: this.itemData });
     },
   },
