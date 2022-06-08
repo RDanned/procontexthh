@@ -1,55 +1,22 @@
 # procontexthh
 [githubpages](https://rdanned.github.io/procontexthh/)
 
-Левая панель имеет список Lists с вложенными списками неких items. У каждого item есть параметры "количество"" и "цвет", которые можно менять вручную. Item помечается как выбранный с помощью чекбокса.
 
-Все выбранные items отображаются на правой панели в отдельном блоке для каждого List в указанном количестве в виде цветных квадратиков.
+The left panel has a list of Lists with nested lists of some items. Each item has parameters "number" and "color", which can be changed manually. Item is marked as selected with a checkbox.
 
-Каждый отдельный блок List имеет два состояния: отсортированное и перемешанное в случайном порядке.
+All selected items are displayed on the right panel in a separate block for each List in the specified quantity as colored squares.
 
-Входные данные: 5 листов от 4 до 10 вложенных элементов (произвольно)
+Each individual List block has two states: sorted and shuffled in random order.
 
-Макеты для примера смотри на второй странице.
+Input: 5 sheets of 4 to 10 nested items (arbitrary)
 
-### Требования
+### Requirements
 
-При клике на чекбокс уровня List должны выбираться все вложенные items. Если все вложенные items уже выбраны, то снимать с них выделение. Если выбран хотя бы один item, но не все, то отображать точку в чекбоксе родительского List'a.
-Должна быть возможность изменять параметр "количество" у items (обычного input достаточно, значение должно быть >= 0);
-Должна быть возможность изменять параметр "цвет" у items (input type="color");
-Сортировка и перемешивание List'ов по отдельности;
-Все действия на странице должны происходить без её перезагрузки;
-Все изменяемые значения должны быть реактивными;
-У каждого item изначально должны быть указаны параметры "количество"" и "цвет" по умолчанию (задать произвольно).
+Clicking on a List level checkbox should select all subitems. If all subitems have already been selected, then deselect them. If at least one item is selected, but not all of them, then display a point in parent List checkbox. There must be an ability to change "quantity" parameter of items (the usual input is enough, the value must be >= 0); 
+There must be an ability to change "color" parameter of items (input type="color"); 
+Sorting and shuffling of Lists separately; All actions on the page must occur without page reload; All changed values must be reactive; Each item must initially have parameters "quantity" and "color" by default (set arbitrary).
 
-### Дополнительно
+### Additionally
 
-Lists в левой панели должны сворачиваться и разворачиваться;
-При клике на квадратик в правой панели он должен удаляться (уменьшаться параметр "количество" у соответствующего item).
-
-## Project setup
-
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-
-```
-npm run build
-```
-
-### Lints and fixes files
-
-```
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Lists in the left panel should collapse and expand; 
+When clicking on a square in the right panel, it should be deleted (the "quantity" parameter of the corresponding item should be reduced).
